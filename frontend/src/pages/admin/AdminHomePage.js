@@ -3,7 +3,6 @@ import SeeNotice from '../../components/SeeNotice';
 import Students from "../../assets/img1.png";
 import Classes from "../../assets/img2.png";
 import Teachers from "../../assets/img3.png";
-import Fees from "../../assets/img4.png";
 import styled from 'styled-components';
 import CountUp from 'react-countup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,46 +34,55 @@ const AdminHomePage = () => {
     return (
         <>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Students} alt="Students" />
-                            <Title>
-                                Total Students
-                            </Title>
-                            <Data start={0} end={numberOfStudents} duration={2.5} />
-                        </StyledPaper>
+                <Grid container spacing={4}>
+                    {/* Statistics Cards Row */}
+                    <Grid item xs={12}>
+                        <StatsContainer container spacing={3} justifyContent="center">
+                            <Grid item xs={12} sm={6} md={4}>
+                                <EnhancedStyledPaper>
+                                    <IconContainer>
+                                        <img src={Students} alt="Students" />
+                                    </IconContainer>
+                                    <Title>
+                                        Total Students
+                                    </Title>
+                                    <Data start={0} end={numberOfStudents} duration={2.5} />
+                                    <Subtitle>Enrolled students in all classes</Subtitle>
+                                </EnhancedStyledPaper>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <EnhancedStyledPaper>
+                                    <IconContainer>
+                                        <img src={Classes} alt="Classes" />
+                                    </IconContainer>
+                                    <Title>
+                                        Total Classes
+                                    </Title>
+                                    <Data start={0} end={numberOfClasses} duration={5} />
+                                    <Subtitle>Active classes this semester</Subtitle>
+                                </EnhancedStyledPaper>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <EnhancedStyledPaper>
+                                    <IconContainer>
+                                        <img src={Teachers} alt="Teachers" />
+                                    </IconContainer>
+                                    <Title>
+                                        Total Teachers
+                                    </Title>
+                                    <Data start={0} end={numberOfTeachers} duration={2.5} />
+                                    <Subtitle>Faculty members on staff</Subtitle>
+                                </EnhancedStyledPaper>
+                            </Grid>
+                        </StatsContainer>
                     </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Classes} alt="Classes" />
-                            <Title>
-                                Total Classes
-                            </Title>
-                            <Data start={0} end={numberOfClasses} duration={5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Teachers} alt="Teachers" />
-                            <Title>
-                                Total Teachers
-                            </Title>
-                            <Data start={0} end={numberOfTeachers} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Fees} alt="Fees" />
-                            <Title>
-                                Fees Collection
-                            </Title>
-                            <Data start={0} end={23000} duration={2.5} prefix="$" />                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                    
+                    {/* Notice Board */}
+                    <Grid item xs={12}>
+                        <NoticeSection sx={{ p: 3, display: 'flex', flexDirection: 'column' }}>
+                            <NoticeTitle>Notice Board</NoticeTitle>
                             <SeeNotice />
-                        </Paper>
+                        </NoticeSection>
                     </Grid>
                 </Grid>
             </Container>
@@ -82,6 +90,10 @@ const AdminHomePage = () => {
     );
 };
 
+
+const StatsContainer = styled(Grid)`
+  margin-bottom: 2rem;
+`;
 
 const StyledPaper = styled(Paper)`
   padding: 16px;
@@ -93,13 +105,115 @@ const StyledPaper = styled(Paper)`
   text-align: center;
 `;
 
-const Title = styled.p`
-  font-size: 1.25rem;
+const EnhancedStyledPaper = styled(Paper)`
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 280px;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #7f56da, #667eea, #4ecdc4);
+  }
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+const IconContainer = styled.div`
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(127, 86, 218, 0.1), rgba(102, 126, 234, 0.1));
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+  
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  
+  ${EnhancedStyledPaper}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
+const Title = styled.h3`
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0.5rem 0;
+  letter-spacing: -0.01em;
 `;
 
 const Data = styled(CountUp)`
-  font-size: calc(1.3rem + .6vw);
-  color: green;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #7f56da;
+  margin: 0.5rem 0;
+  background: linear-gradient(135deg, #7f56da 0%, #667eea 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const Subtitle = styled.p`
+  font-size: 0.9rem;
+  color: #718096;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.4;
+`;
+
+const NoticeSection = styled(Paper)`
+  && {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4ecdc4, #45b7d1, #96ceb4);
+    }
+  }
+`;
+
+const NoticeTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: -0.02em;
 `;
 
 export default AdminHomePage

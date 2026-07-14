@@ -8,6 +8,7 @@ import {
     Divider,
     IconButton,
 } from '@mui/material';
+import styled, { keyframes } from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import StudentSideBar from './StudentSideBar';
@@ -45,15 +46,15 @@ const StudentDashboard = () => {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography
+                        <DashboardTitle
                             component="h1"
                             variant="h6"
                             color="inherit"
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Student Dashboard
-                        </Typography>
+                            🎓 Student Dashboard
+                        </DashboardTitle>
                         <AccountMenu />
                     </Toolbar>
                 </AppBar>
@@ -68,7 +69,7 @@ const StudentDashboard = () => {
                         <StudentSideBar />
                     </List>
                 </Drawer>
-                <Box component="main" sx={styles.boxStyled}>
+                <EnhancedMainContent component="main">
                     <Toolbar />
                     <Routes>
                         <Route path="/" element={<StudentHomePage />} />
@@ -82,13 +83,81 @@ const StudentDashboard = () => {
 
                         <Route path="/logout" element={<Logout />} />
                     </Routes>
-                </Box>
+                </EnhancedMainContent>
             </Box>
         </>
     );
 }
 
 export default StudentDashboard
+
+// Animations
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const glow = keyframes`
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(78, 205, 196, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(78, 205, 196, 0.8), 0 0 30px rgba(78, 205, 196, 0.6);
+  }
+`;
+
+// Enhanced Components
+const DashboardTitle = styled(Typography)`
+  && {
+    font-weight: 700;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ${glow} 3s ease-in-out infinite;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
+`;
+
+const EnhancedMainContent = styled(Box)`
+  && {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    flex-grow: 1;
+    height: 100vh;
+    overflow: auto;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    & > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
+`;
 
 const styles = {
     boxStyled: {
